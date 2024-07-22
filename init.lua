@@ -2,7 +2,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
-vim.g.encodeing = "UTF-8"
+vim.g.encodeing = 'UTF-8'
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- For more options, you can see `:help option-list`
@@ -11,6 +11,10 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 vim.opt.showmode = false
+
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -22,6 +26,7 @@ end)
 
 -- Enable break indent
 vim.opt.breakindent = true
+
 -- Save undo history
 vim.opt.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
@@ -75,7 +80,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-
 --
 --  See `:help wincmd` for a list of all window commands
 -- wq key
@@ -87,24 +91,27 @@ vim.keymap.set('v', '<', '<gv', opt)
 vim.keymap.set('v', '>', '>gv', opt)
 
 -- Keybinds to split window and open/close window
-vim.keymap.set("n", "s-", ":vsp<CR>", opt)
-vim.keymap.set("n", "s|", ":sp<CR>", opt)
-vim.keymap.set("n", "sc", "<C-w>c", opt) -- close now window
-vim.keymap.set("n", "so", "<C-w>o", opt) -- close others
+vim.keymap.set('n', 's|', ':vsp<CR>', opt)
+vim.keymap.set('n', 's-', ':sp<CR>', opt)
+vim.keymap.set('n', 'sc', '<C-w>c', opt) -- close now window
+vim.keymap.set('n', 'so', '<C-w>o', opt) -- close others
 
 -- Use ALT+<hjkl> to switch between windows
-vim.keymap.set("n", "<A-j>", "<C-w>j", opt)
-vim.keymap.set("n", "<A-k>", "<C-w>k", opt)
-vim.keymap.set("n", "<A-l>", "<C-w>l", opt)
+vim.keymap.set('n', '<A-j>', '<C-w>j', opt)
+vim.keymap.set('n', '<A-k>', '<C-w>k', opt)
+vim.keymap.set('n', '<A-l>', '<C-w>l', opt)
+vim.keymap.set('n', '<A-h>', '<C-w>h', opt)
 
-vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", opt)
-vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", opt)
+vim.keymap.set('n', '<C-h>', ':bn<CR>', opt)
+vim.keymap.set('n', '<C-l>', ':bp<CR>', opt)
+--vim.keymap.set("n", "<C-h>", ":BufferLineCyclePrev<CR>", opt)
+--vim.keymap.set("n", "<C-l>", ":BufferLineCycleNext<CR>", opt)
 
 -- nvimTree
 vim.keymap.set('n', '<A-m>', ':NvimTreeToggle<CR>', opt)
 
 -- nvim-treesitter 代码格式化
-vim.keymap.set("n", "<leader>i", "gg=G", opt)
+vim.keymap.set('n', '<leader>i', 'gg=G', opt)
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -187,7 +194,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -235,7 +242,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -343,7 +350,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
