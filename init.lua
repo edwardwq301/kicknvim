@@ -1,3 +1,7 @@
+require 'custom.wq.utils'
+require 'custom.wq.autocmd'
+require 'custom.wq.base'
+require 'custom.wq.keyboard'
 -- Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -53,9 +57,6 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 8
-
--- my custom keyboard
-require 'custom.keyboard'
 
 -- [[ Basic Autocommands ]]
 -- Highlight when yanking (copying) text
