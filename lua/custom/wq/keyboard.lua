@@ -1,101 +1,34 @@
-local vim = vim
-local opt = {
-    noremap = true,
-    silent = true
-}
+-- 智能换行移动（j/k 在长行时按屏幕行移动）
+vim.keymap.set({ 'n', 'v' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, desc = "Move down (line-wrap aware)" })
+vim.keymap.set({ 'n', 'v' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, desc = "Move up (line-wrap aware)" })
 
-local Base = {
-    movement = {{'n', '<ESC>', '<cmd>nohlsearch<CR>', {
-        desc = "cancel highlight result"
-    }}, {{{"n", "v"}, "j", "v:count == 0 ? 'gj' : 'j'", {
-        expr = true,
-        silent = true,
-        desc = "go to next wrapline"
-    }}}, {{"n", "v"}, "k", "v:count == 0 ? 'gk' : 'k'", {
-        expr = true,
-        silent = true,
-        desc = "go to previous wrapline"
-    }}, {{"n", "v"}, "L", "g_", {
-        desc = "go to line end"
-    }}, {{"n", "v"}, "H", "^", {
-        desc = "go to line begin"
-    }}},
-    -- page scroll
-    page = {{{"n", "v"}, "<C-u>", math.floor(vim.fn.winheight(0) / 2) .. "<C-u>", {
-        desc = "scroll half page forward"
-    }}, {{"n", "v"}, "<C-d>", math.floor(vim.fn.winheight(0) / 2) .. "<C-d>", {
-        desc = "scroll half page backward"
-    }}},
+-- 行首/行尾
+vim.keymap.set({ 'n', 'v' }, 'L', 'g_', { desc = "Go to line end" })
+vim.keymap.set({ 'n', 'v' }, 'H', '^', { desc = "Go to line start" })
 
-    edit = {{"i", "<C-BS>", "<C-W>", {
-        desc = "delete word forward"
-    }}, {"n", "yw", "yiw", {
-        desc = "copy the word where cursor locates"
-    }}, {"n", "<C-S-v>", "<C-v>", {
-        desc = "start visual mode blockwise"
-    }}, {"v", ">", ">gv", {
-        desc = "indent while keeping virtual mode after "
-    }}, {"v", "<", "<gv", {
-        desc = "indent while keeping virtual mode after "
-    }}},
-    -- todo window split dont work
-    windows = {{'n', 's|', ':vsp<CR>', {
-        silent = true,
-        desc = "split horizon"
-    }}, {'n', 's-', ':sp<CR>', {
-        silent = true,
-        desc = "split vertical"
-    }}, {'n', 'sc', '<C-w>c', {
-        silent = true,
-        desc = "close current window"
-    }}, {'n', 'so', '<C-w>o', {
-        silent = true,
-        desc = "close other window"
-    }}, {'n', '<A-j>', '<C-w>j', {
-        silent = true,
-        desc = "move to  down window"
-    }}, {'n', '<A-k>', '<C-w>k', {
-        silent = true,
-        desc = "move to up window"
-    }}, {'n', '<A-l>', '<C-w>l', {
-        silent = true,
-        desc = "move to left window"
-    }}, {'n', '<A-h>', '<C-w>h', {
-        silent = true,
-        desc = "move to right window"
-    }}},
-    cmd = {{{"n", "v"}, ";", ":", {
-        nowait = true,
-        desc = "enter commandline mode"
-    }}, {"n", "g=", vim.g.format, {
-        desc = "format document"
-    }}, {'t', '<Esc><Esc>', '<C-\\><C-n>', {
-        desc = 'Exit terminal mode'
-    }}},
+-- 页面滚动
+local half_page = math.floor(vim.fn.winheight(0) / 2)
+vim.keymap.set({ 'n', 'v' }, '<C-u>', half_page .. '<C-u>', { desc = "Scroll half page up" })
+vim.keymap.set({ 'n', 'v' }, '<C-d>', half_page .. '<C-d>', { desc = "Scroll half page down" })
 
-    fold = {{"n", "<CR>", "za", {
-        desc = "toggle fold"
-    }}, {"n", "<2-LeftMouse>", "za", {
-        desc = "toggle fold"
-    }}},
-    -- todo dont work comment
-    comment = {{"v", "<C-/>", "gc", {
-        desc = "comment",
-        remap = true,
-        silent = true
-    }}, {"v", "<C-_>", "gc", {
-        desc = "comment",
-        remap = true,
-        silent = true
-    }}, {"n", "<C-/>", "gcc", {
-        desc = "comment",
-        remap = true,
-        silent = true
-    }}, {"n", "<C-_>", "gcc", {
-        desc = "comment",
-        remap = true,
-        silent = true
-    }}}
-}
+-- 编辑操作
+vim.keymap.set('i', '<C-BS>', '<C-w>', { desc = "Delete previous word" })
+-- 缩进后保持选中
+vim.keymap.set('v', '>', '>gv', { desc = "Indent and keep selection" })
+vim.keymap.set('v', '<', '<gv', { desc = "Unindent and keep selection" })
 
-vim.g.register_keymap(Base)
+--  窗口管理
+vim.keymap.set('n', 's|', '<cmd>vsp<CR>', { desc = "Vertical split" })
+vim.keymap.set('n', 's-', '<cmd>sp<CR>', { desc = "Horizontal split" })
+vim.keymap.set('n', 'sc', '<C-w>c', { desc = "Close current window" })
+vim.keymap.set('n', 'so', '<C-w>o', { desc = "Close other windows" })
+
+-- 命令模式
+vim.keymap.set({ 'n', 'v' }, ';', ':', { desc = "Enter command mode" })
+
+-- 折叠
+vim.keymap.set('n', '<CR>', 'za', { desc = "Toggle fold" })
+vim.keymap.set('n', '<2-LeftMouse>', 'za', { desc = "Toggle fold (double-click)" })
+
+-- 注释
+vim.keymap.set({ 'n', 'v' }, '<C-/>', 'gc', { remap = true, desc = "Toggle comment" })
